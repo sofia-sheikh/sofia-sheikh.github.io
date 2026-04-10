@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>Sofia Sheikh&#39;s Sports Blog</title>
-<link>https://your-website-url.example.com/</link>
-<atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://sofia-sheikh.github.io/</link>
+<atom:link href="https://sofia-sheikh.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>A website about sports and data.</description>
 <generator>quarto-1.9.36</generator>
 <lastBuildDate>Fri, 10 Apr 2026 05:00:00 GMT</lastBuildDate>
 <item>
   <title>Why did Creighton’s men’s basketball team fall off in 2026?</title>
   <dc:creator>Sofia Sheikh</dc:creator>
-  <link>https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</link>
+  <link>https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</link>
   <description><![CDATA[ 
 
 
@@ -2193,7 +2193,7 @@ font-style: inherit;">"plot"</span></span>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2429,7 +2429,7 @@ font-style: inherit;">"plot"</span></span>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2676,7 +2676,7 @@ font-style: inherit;">"plot"</span></span>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -2690,9 +2690,9 @@ font-style: inherit;">"plot"</span></span>
   <category>basketball</category>
   <category>creighton</category>
   <category>code</category>
-  <guid>https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</guid>
+  <guid>https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</guid>
   <pubDate>Fri, 10 Apr 2026 05:00:00 GMT</pubDate>
-  <media:content url="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/image.png" medium="image" type="image/png" height="88" width="144"/>
+  <media:content url="https://sofia-sheikh.github.io/posts/why-did-creightons-mens-basketball-fall-off-in-2026/image.png" medium="image" type="image/png" height="88" width="144"/>
 </item>
 </channel>
 </rss>

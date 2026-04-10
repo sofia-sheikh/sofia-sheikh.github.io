@@ -10,61 +10,2689 @@
 <atom:link href="https://your-website-url.example.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>A website about sports and data.</description>
 <generator>quarto-1.9.36</generator>
-<lastBuildDate>Mon, 30 Mar 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 10 Apr 2026 05:00:00 GMT</lastBuildDate>
 <item>
-  <title>Post With Code</title>
-  <dc:creator>Harlow Malloc</dc:creator>
-  <link>https://your-website-url.example.com/posts/post-with-code/</link>
+  <title>Why did Creighton’s men’s basketball team fall off in 2026?</title>
+  <dc:creator>Sofia Sheikh</dc:creator>
+  <link>https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</link>
   <description><![CDATA[ 
 
 
 
 
 
-<p>This is a post with executable code.</p>
+<p>Creighton University has maintained a notably successful men’s college basketball program, with seven March Madness appearances in the past decade, including a run to the Elite Eight in 2023.</p>
+<p>However, this past season, they did not qualify for the March Madness tournament and finished with a 15-17 overall record. What factors might have contributed to this decline in performance for the Bluejays?</p>
+<p>First, let’s analyze their strength of schedule and simple rating system over the past two seasons to determine if the drop is due to internal issues, such as poor player performance, or external factors like an increased strength of schedule.</p>
+<p>Sports Reference offers both a simple rating system and a strength of schedule metric for each team. The simple rating combines average point differential and strength of schedule, meaning teams could have many losses but still earn a positive rating if they faced strong opponents.</p>
+<p>Next, let’s compare the rest of the Big East’s strength of schedule and simple ratings to put things in perspective.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="dv" style="color: #AD0000;
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+font-style: inherit;">library</span>(gt)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">1</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+font-style: inherit;">library</span>(ggbeeswarm)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggrepel)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">stats25 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2025_cbball_stats.csv"</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"> bigeast25<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> stats25 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Rk <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">63</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">99</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">162</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">243</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">290</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">270</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">339</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">362</span>))</span>
+<span id="cb1-10"> </span>
+<span id="cb1-11">bigeast25 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(School, W...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, L...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, SRS, SOS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rename</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">W =</span> W...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">L=</span> L...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Simple Rating</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> SRS, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Sched. Strength</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> SOS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">top_n</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wt=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Simple Rating</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gt</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_header</span>(</span>
+<span id="cb1-17">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton is a  Big East powerhouse in 2025."</span>,</span>
+<span id="cb1-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton ranked No. 1 in schedule strength and No. 3 in simple rating compared to the other Big East Schools. This is considered as one of their better seasons in recent history."</span></span>
+<span id="cb1-19">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-20">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>),</span>
+<span id="cb1-21">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>)</span>
+<span id="cb1-22">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-23">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>),</span>
+<span id="cb1-24">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"subtitle"</span>)</span>
+<span id="cb1-25">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_source_note</span>(</span>
+<span id="cb1-27">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">source_note =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"By: Sofia Sheikh"</span></span>
+<span id="cb1-28">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_source_note</span>(</span>
+<span id="cb1-30">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">source_note =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">md</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Sports Reference"</span>)</span>
+<span id="cb1-31">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb1-32">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-33">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_fill</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>),   </span>
+<span id="cb1-34">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb1-35">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> School <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton"</span></span>
+<span id="cb1-36">  )</span>
+<span id="cb1-37">) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-38">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-39">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb1-40">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb1-41">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">columns =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(School)</span>
+<span id="cb1-42">    ))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-43">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-44">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"white"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb1-45">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb1-46">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> School <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton"</span></span>
+<span id="cb1-47">    )</span>
+<span id="cb1-48">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-49">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">opt_row_striping</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  </span>
+<span id="cb1-50">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">opt_table_lines</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-51">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb1-52">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_borders</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sides =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"top"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>), </span>
+<span id="cb1-53">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">px</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)),</span>
+<span id="cb1-54">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_labels</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">everything</span>())</span>
+<span id="cb1-55">  )</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="xuudzkvmup" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xuudzkvmup table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#xuudzkvmup thead, #xuudzkvmup tbody, #xuudzkvmup tfoot, #xuudzkvmup tr, #xuudzkvmup td, #xuudzkvmup th {
+  border-style: none;
+}
+
+#xuudzkvmup p {
+  margin: 0;
+  padding: 0;
+}
+
+#xuudzkvmup .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#xuudzkvmup .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xuudzkvmup .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xuudzkvmup .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xuudzkvmup .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xuudzkvmup .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xuudzkvmup .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xuudzkvmup .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xuudzkvmup .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#xuudzkvmup .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#xuudzkvmup .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xuudzkvmup .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xuudzkvmup .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xuudzkvmup .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xuudzkvmup .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xuudzkvmup .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#xuudzkvmup .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#xuudzkvmup .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#xuudzkvmup .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xuudzkvmup .gt_first_summary_row {
+  border-top-style: none;
+  border-top-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#xuudzkvmup .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xuudzkvmup .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xuudzkvmup .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xuudzkvmup .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xuudzkvmup .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xuudzkvmup .gt_left {
+  text-align: left;
+}
+
+#xuudzkvmup .gt_center {
+  text-align: center;
+}
+
+#xuudzkvmup .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xuudzkvmup .gt_font_normal {
+  font-weight: normal;
+}
+
+#xuudzkvmup .gt_font_bold {
+  font-weight: bold;
+}
+
+#xuudzkvmup .gt_font_italic {
+  font-style: italic;
+}
+
+#xuudzkvmup .gt_super {
+  font-size: 65%;
+}
+
+#xuudzkvmup .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#xuudzkvmup .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#xuudzkvmup .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#xuudzkvmup .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#xuudzkvmup .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#xuudzkvmup .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#xuudzkvmup .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#xuudzkvmup .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#xuudzkvmup div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="5" class="gt_heading gt_title gt_font_normal" style="text-align: left; color: #000000; font-weight: bold;">Creighton is a Big East powerhouse in 2025.</td>
+</tr>
+<tr class="gt_heading even">
+<td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="text-align: left; color: #000000;">Creighton ranked No. 1 in schedule strength and No. 3 in simple rating compared to the other Big East Schools. This is considered as one of their better seasons in recent history.</td>
+</tr>
+<tr class="gt_col_headings header">
+<th id="School" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">School</th>
+<th id="W" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">W</th>
+<th id="L" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">L</th>
+<th id="Simple-Rating" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">Simple Rating</th>
+<th id="Sched.-Strength" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">Sched. Strength</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Butler</td>
+<td class="gt_row gt_right" headers="W">15</td>
+<td class="gt_row gt_right" headers="L">20</td>
+<td class="gt_row gt_right" headers="Simple Rating">10.03</td>
+<td class="gt_row gt_right" headers="Sched. Strength">10.14</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Connecticut</td>
+<td class="gt_row gt_right gt_striped" headers="W">24</td>
+<td class="gt_row gt_right gt_striped" headers="L">11</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">17.87</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">8.87</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">Creighton</td>
+<td class="gt_row gt_right" headers="W" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">25</td>
+<td class="gt_row gt_right" headers="L" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">11</td>
+<td class="gt_row gt_right" headers="Simple Rating" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">16.49</td>
+<td class="gt_row gt_right" headers="Sched. Strength" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">11.04</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">DePaul</td>
+<td class="gt_row gt_right gt_striped" headers="W">14</td>
+<td class="gt_row gt_right gt_striped" headers="L">20</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">5.30</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">7.33</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Georgetown</td>
+<td class="gt_row gt_right" headers="W">18</td>
+<td class="gt_row gt_right" headers="L">16</td>
+<td class="gt_row gt_right" headers="Simple Rating">8.18</td>
+<td class="gt_row gt_right" headers="Sched. Strength">5.77</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Marquette</td>
+<td class="gt_row gt_right gt_striped" headers="W">23</td>
+<td class="gt_row gt_right gt_striped" headers="L">11</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">18.19</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">10.37</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Providence</td>
+<td class="gt_row gt_right" headers="W">12</td>
+<td class="gt_row gt_right" headers="L">20</td>
+<td class="gt_row gt_right" headers="Simple Rating">7.17</td>
+<td class="gt_row gt_right" headers="Sched. Strength">8.33</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Seton Hall</td>
+<td class="gt_row gt_right gt_striped" headers="W">7</td>
+<td class="gt_row gt_right gt_striped" headers="L">25</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">-0.26</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">8.36</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">St. John's</td>
+<td class="gt_row gt_right" headers="W">31</td>
+<td class="gt_row gt_right" headers="L">5</td>
+<td class="gt_row gt_right" headers="Simple Rating">21.25</td>
+<td class="gt_row gt_right" headers="Sched. Strength">8.56</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Villanova</td>
+<td class="gt_row gt_right gt_striped" headers="W">21</td>
+<td class="gt_row gt_right gt_striped" headers="L">15</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">13.28</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">7.45</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Xavier</td>
+<td class="gt_row gt_right" headers="W">22</td>
+<td class="gt_row gt_right" headers="L">12</td>
+<td class="gt_row gt_right" headers="Simple Rating">15.25</td>
+<td class="gt_row gt_right" headers="Sched. Strength">8.72</td>
+</tr>
+</tbody><tfoot>
+<tr class="gt_sourcenotes odd">
+<td colspan="5" class="gt_sourcenote">By: Sofia Sheikh</td>
+</tr>
+<tr class="gt_sourcenotes even">
+<td colspan="5" class="gt_sourcenote">Source: Sports Reference</td>
+</tr>
+</tfoot>
+
+</table>
+
 </div>
 </div>
+</div>
+<p>In the 2025 season, Creighton had an above-average simple rating and strength of schedule, marking a very solid year for their basketball program.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">stats26 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026_cbball_stats.csv"</span>)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">bigeast26 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> stats26 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Rk <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">63</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">99</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">162</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">244</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">291</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">271</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">340</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">363</span>))</span>
+<span id="cb2-5"> </span>
+<span id="cb2-6">bigeast26 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(School, W...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, L...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, SRS, SOS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rename</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">W =</span> W...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">L=</span> L...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Simple Rating</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> SRS, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Sched. Strength</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> SOS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">top_n</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">wt=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Simple Rating</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">`</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gt</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_header</span>(</span>
+<span id="cb2-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026 marks the year of Creighton's fall off."</span>,</span>
+<span id="cb2-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton ranked No. 3  in schedule strength and No. 2 in simple rating compared to the other Big East Schools. While the drop off is not that noticeable, it is still significant."</span></span>
+<span id="cb2-14">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-15">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>),</span>
+<span id="cb2-16">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>)</span>
+<span id="cb2-17">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-18">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>),</span>
+<span id="cb2-19">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"subtitle"</span>)</span>
+<span id="cb2-20">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_source_note</span>(</span>
+<span id="cb2-22">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">source_note =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"By: Sofia Sheikh"</span></span>
+<span id="cb2-23">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-24">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_source_note</span>(</span>
+<span id="cb2-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">source_note =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">md</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Sports Reference"</span>)</span>
+<span id="cb2-26">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-27">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-28">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_fill</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>),   </span>
+<span id="cb2-29">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb2-30">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> School <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton"</span></span>
+<span id="cb2-31">  )</span>
+<span id="cb2-32">) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-34">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb2-35">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb2-36">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">columns =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(School)</span>
+<span id="cb2-37">    ))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-38">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-39">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"white"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb2-40">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(</span>
+<span id="cb2-41">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> School <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton"</span></span>
+<span id="cb2-42">    )</span>
+<span id="cb2-43">  ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  </span>
+<span id="cb2-44">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">opt_row_striping</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  </span>
+<span id="cb2-45">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">opt_table_lines</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span>  </span>
+<span id="cb2-46">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb2-47">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_borders</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sides =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"top"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bottom"</span>), </span>
+<span id="cb2-48">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">px</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)),</span>
+<span id="cb2-49">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_labels</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">everything</span>())</span>
+<span id="cb2-50">  )</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="qypgcducnp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qypgcducnp table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qypgcducnp thead, #qypgcducnp tbody, #qypgcducnp tfoot, #qypgcducnp tr, #qypgcducnp td, #qypgcducnp th {
+  border-style: none;
+}
+
+#qypgcducnp p {
+  margin: 0;
+  padding: 0;
+}
+
+#qypgcducnp .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qypgcducnp .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qypgcducnp .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qypgcducnp .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qypgcducnp .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qypgcducnp .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qypgcducnp .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qypgcducnp .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qypgcducnp .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qypgcducnp .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qypgcducnp .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qypgcducnp .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qypgcducnp .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qypgcducnp .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qypgcducnp .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qypgcducnp .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qypgcducnp .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qypgcducnp .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qypgcducnp .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qypgcducnp .gt_first_summary_row {
+  border-top-style: none;
+  border-top-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qypgcducnp .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qypgcducnp .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: none;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qypgcducnp .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qypgcducnp .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qypgcducnp .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qypgcducnp .gt_left {
+  text-align: left;
+}
+
+#qypgcducnp .gt_center {
+  text-align: center;
+}
+
+#qypgcducnp .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qypgcducnp .gt_font_normal {
+  font-weight: normal;
+}
+
+#qypgcducnp .gt_font_bold {
+  font-weight: bold;
+}
+
+#qypgcducnp .gt_font_italic {
+  font-style: italic;
+}
+
+#qypgcducnp .gt_super {
+  font-size: 65%;
+}
+
+#qypgcducnp .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qypgcducnp .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qypgcducnp .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qypgcducnp .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qypgcducnp .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qypgcducnp .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qypgcducnp .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qypgcducnp .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qypgcducnp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="5" class="gt_heading gt_title gt_font_normal" style="text-align: left; color: #000000; font-weight: bold;">2026 marks the year of Creighton's fall off.</td>
+</tr>
+<tr class="gt_heading even">
+<td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="text-align: left; color: #000000;">Creighton ranked No. 3 in schedule strength and No. 2 in simple rating compared to the other Big East Schools. While the drop off is not that noticeable, it is still significant.</td>
+</tr>
+<tr class="gt_col_headings header">
+<th id="School" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">School</th>
+<th id="W" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">W</th>
+<th id="L" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">L</th>
+<th id="Simple-Rating" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">Simple Rating</th>
+<th id="Sched.-Strength" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="border-top-width: 1px; border-top-style: solid; border-top-color: grey; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: grey" scope="col">Sched. Strength</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Butler</td>
+<td class="gt_row gt_right" headers="W">16</td>
+<td class="gt_row gt_right" headers="L">16</td>
+<td class="gt_row gt_right" headers="Simple Rating">10.26</td>
+<td class="gt_row gt_right" headers="Sched. Strength">8.41</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Connecticut</td>
+<td class="gt_row gt_right gt_striped" headers="W">31</td>
+<td class="gt_row gt_right gt_striped" headers="L">5</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">22.65</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">10.21</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">Creighton</td>
+<td class="gt_row gt_right" headers="W" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">15</td>
+<td class="gt_row gt_right" headers="L" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">17</td>
+<td class="gt_row gt_right" headers="Simple Rating" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">10.35</td>
+<td class="gt_row gt_right" headers="Sched. Strength" style="background-color: #005CA9; color: #FFFFFF; font-weight: bold">10.26</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">DePaul</td>
+<td class="gt_row gt_right gt_striped" headers="W">16</td>
+<td class="gt_row gt_right gt_striped" headers="L">16</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">7.29</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">6.60</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Georgetown</td>
+<td class="gt_row gt_right" headers="W">16</td>
+<td class="gt_row gt_right" headers="L">18</td>
+<td class="gt_row gt_right" headers="Simple Rating">9.02</td>
+<td class="gt_row gt_right" headers="Sched. Strength">8.32</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Marquette</td>
+<td class="gt_row gt_right gt_striped" headers="W">12</td>
+<td class="gt_row gt_right gt_striped" headers="L">20</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">9.04</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">9.66</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Providence</td>
+<td class="gt_row gt_right" headers="W">15</td>
+<td class="gt_row gt_right" headers="L">18</td>
+<td class="gt_row gt_right" headers="Simple Rating">10.63</td>
+<td class="gt_row gt_right" headers="Sched. Strength">9.33</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Seton Hall</td>
+<td class="gt_row gt_right gt_striped" headers="W">21</td>
+<td class="gt_row gt_right gt_striped" headers="L">12</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">13.26</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">8.26</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">St. John's</td>
+<td class="gt_row gt_right" headers="W">30</td>
+<td class="gt_row gt_right" headers="L">6</td>
+<td class="gt_row gt_right" headers="Simple Rating">22.54</td>
+<td class="gt_row gt_right" headers="Sched. Strength">10.82</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_striped" headers="School" style="color: #000000; font-weight: bold">Villanova</td>
+<td class="gt_row gt_right gt_striped" headers="W">24</td>
+<td class="gt_row gt_right gt_striped" headers="L">9</td>
+<td class="gt_row gt_right gt_striped" headers="Simple Rating">15.84</td>
+<td class="gt_row gt_right gt_striped" headers="Sched. Strength">9.96</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="School" style="color: #000000; font-weight: bold">Xavier</td>
+<td class="gt_row gt_right" headers="W">15</td>
+<td class="gt_row gt_right" headers="L">18</td>
+<td class="gt_row gt_right" headers="Simple Rating">7.67</td>
+<td class="gt_row gt_right" headers="Sched. Strength">9.94</td>
+</tr>
+</tbody><tfoot>
+<tr class="gt_sourcenotes odd">
+<td colspan="5" class="gt_sourcenote">By: Sofia Sheikh</td>
+</tr>
+<tr class="gt_sourcenotes even">
+<td colspan="5" class="gt_sourcenote">Source: Sports Reference</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+<p>However, that success did not last. In 2026, the Bluejays’ simple rating dropped by -6.14 points, while their strength of schedule decreased by only -0.78.</p>
+<p>This indicates that from 2025 to 2026, while their schedule remained relatively consistent, their simple rating declined significantly, suggesting that the decline in performance is due to internal factors, such as team performance, rather than increased competition.</p>
+<p>Having established that the issue is internal, let’s pinpoint whether it stems from offensive or defensive weaknesses and identify the root cause.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">creighton_2026 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creighton26.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-2">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Season =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026"</span>)</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">creighton_2025 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creighton25.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Season =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2025"</span>)</span>
+<span id="cb3-6"></span>
+<span id="cb3-7">creighton_2024 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creighton24.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Season =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2024"</span>)</span>
+<span id="cb3-9"></span>
+<span id="cb3-10">creighton_2023 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creighton23.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Season =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2023"</span>)</span>
+<span id="cb3-12"></span>
+<span id="cb3-13">creighton_2022 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creighton22.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Season =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2022"</span>)</span>
+<span id="cb3-15"></span>
+<span id="cb3-16">creightonall <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_rows</span>(</span>
+<span id="cb3-17">  creighton_2022,</span>
+<span id="cb3-18">  creighton_2023,</span>
+<span id="cb3-19">  creighton_2024,</span>
+<span id="cb3-20">  creighton_2025,</span>
+<span id="cb3-21">  creighton_2026</span>
+<span id="cb3-22">)</span>
+<span id="cb3-23"></span>
+<span id="cb3-24">creighton <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creightonall <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-25">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(</span>
+<span id="cb3-26">      Tm <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span> )</span>
+<span id="cb3-27"></span>
+<span id="cb3-28">season_avg <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creighton <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Season) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-30">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarize</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">avg_pts =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(Tm, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb3-31"></span>
+<span id="cb3-32">creighton23 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creighton <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Season <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2023"</span>)</span>
+<span id="cb3-34"></span>
+<span id="cb3-35">creighton25 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creighton <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-36">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">filter</span>(Season <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2025"</span>)</span>
+<span id="cb3-37"></span>
+<span id="cb3-38"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-39"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_beeswarm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span> creighton,</span>
+<span id="cb3-40">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Season, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Tm), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6CADDE"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-41"> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> season_avg,</span>
+<span id="cb3-42">             <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Season, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> avg_pts),</span>
+<span id="cb3-43">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb3-44">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> season_avg,</span>
+<span id="cb3-45">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Season, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> avg_pts, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">group =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb3-46">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-47">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> season_avg,</span>
+<span id="cb3-48">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Season, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> avg_pts, </span>
+<span id="cb3-49">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>(avg_pts, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)),</span>
+<span id="cb3-50">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb3-51">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vjust =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span id="cb3-52">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-53">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb3-54">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Season"</span>, </span>
+<span id="cb3-55">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Points socred per game"</span>, </span>
+<span id="cb3-56">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton's scoring holds steady."</span>, </span>
+<span id="cb3-57">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton's point distribution stays relatively consistent over the years."</span>, </span>
+<span id="cb3-58">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Sports Reference | By: Sofia Sheikh"</span></span>
+<span id="cb3-59">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb3-60">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb3-61">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(</span>
+<span id="cb3-62">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb3-63">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), </span>
+<span id="cb3-64">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.subtitle =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), </span>
+<span id="cb3-65">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.minor =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb3-66">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"plot"</span></span>
+<span id="cb3-67">    ) </span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The average point distribution between this season and last is not notably different, so we cannot conclude whether this is primarily an offensive or defensive issue. Let’s consider turnovers instead.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">creightonofdf <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creightonall  <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Season) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(</span>
+<span id="cb4-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">giveaways =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(TOV...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>), </span>
+<span id="cb4-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">takeaways =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(TOV...<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span>))</span>
+<span id="cb4-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_segment</span>(</span>
+<span id="cb4-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>creightonofdf, </span>
+<span id="cb4-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(</span>
+<span id="cb4-10">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Season, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">yend=</span>Season,</span>
+<span id="cb4-11">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>takeaways, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xend=</span>giveaways), </span>
+<span id="cb4-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey"</span>,</span>
+<span id="cb4-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span></span>
+<span id="cb4-14">    )<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(</span>
+<span id="cb4-16">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span> creightonofdf,</span>
+<span id="cb4-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(</span>
+<span id="cb4-18">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Season,</span>
+<span id="cb4-19">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>takeaways, </span>
+<span id="cb4-20">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"takeaways"</span></span>
+<span id="cb4-21">    ),</span>
+<span id="cb4-22">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb4-23">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-24">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(</span>
+<span id="cb4-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span> creightonofdf,</span>
+<span id="cb4-26">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(</span>
+<span id="cb4-27">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span>Season,</span>
+<span id="cb4-28">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span>giveaways,</span>
+<span id="cb4-29">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Giveaways"</span></span>
+<span id="cb4-30">    ),</span>
+<span id="cb4-31">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> )<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-32">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_color_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Turnovers"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6CADDE"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb4-34">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Turnovers"</span>, </span>
+<span id="cb4-35">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Season"</span>, </span>
+<span id="cb4-36">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton can not turn the ball over anymore."</span>, </span>
+<span id="cb4-37">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"This season, Creighton has turned the ball over less compared to the past few seasons, along</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">with their opponents."</span>, </span>
+<span id="cb4-38">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Sports Reference | By: Sofia Sheikh"</span></span>
+<span id="cb4-39">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb4-40">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_light</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb4-41">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(</span>
+<span id="cb4-42">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb4-43">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), </span>
+<span id="cb4-44">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.subtitle =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), </span>
+<span id="cb4-45">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.minor =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb4-46">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"plot"</span></span>
+<span id="cb4-47">    ) </span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we see something: Creighton is turning the ball over less, while their opponents are also committing fewer turnovers.</p>
+<p>Next, let’s review last season’s roster to identify who had the most turnovers and whether they are still with the team, transferred or graduated.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">c25 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creightonroster25.csv"</span>)</span>
+<span id="cb5-2">c26 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"creightonroster26.csv"</span>)</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">creighton2526 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_rows</span>(</span>
+<span id="cb5-5">  c25,</span>
+<span id="cb5-6">  c26)</span>
+<span id="cb5-7"></span>
+<span id="cb5-8">creighton2526long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creighton2526 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pivot_longer</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cols=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">starts_with</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOV"</span>), </span>
+<span id="cb5-10">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">names_to=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"type"</span>, </span>
+<span id="cb5-11">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values_to=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"turnovers"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(type, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOV25"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"TOV26"</span>)))</span>
+<span id="cb5-13"></span>
+<span id="cb5-14">creighton2526long <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> creighton2526long <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Player) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb5-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">total_tov =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(turnovers, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb5-17"></span>
+<span id="cb5-18"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>creighton2526long,</span>
+<span id="cb5-20">           <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reorder</span>(Player, total_tov), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight=</span>turnovers, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill=</span>type)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">coord_flip</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_manual</span>(</span>
+<span id="cb5-23">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">name =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Turnovers"</span>, </span>
+<span id="cb5-24">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6CADDE"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#005ca9"</span>), </span>
+<span id="cb5-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2025 Turnovers"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2026 Turnovers"</span>)</span>
+<span id="cb5-26">    )<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-27">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(</span>
+<span id="cb5-28">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Player"</span>, </span>
+<span id="cb5-29">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Turnovers"</span>, </span>
+<span id="cb5-30">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton lost a lot of their rebounders this past </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">season."</span>, </span>
+<span id="cb5-31">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creighton had totaled around 440 turnovers in 2025, while in 2026, only having  383. That is 57 less </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">turnovers this season compared to last season."</span>, </span>
+<span id="cb5-32">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: Sports Referance | By: Sofia Sheikh"</span></span>
+<span id="cb5-33">    ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb5-34">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb5-35">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(</span>
+<span id="cb5-36">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">face =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb5-37">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.title =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), </span>
+<span id="cb5-38">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.subtitle =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), </span>
+<span id="cb5-39">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.minor =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb5-40">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.title.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"plot"</span></span>
+<span id="cb5-41">    ) </span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Based on these observations, I believe that the loss of key players like Ryan Kalkbrenner and injuries such as Owen Freeman’s knee injury and Jackson McAndrew’s foot injury have significantly contributed to the team’s poorer performance this season.</p>
+<p>With Head Coach Greg McDermott’s retirement, it will be interesting to see how Creighton progresses in the upcoming seasons. Is this the start of a decline, or can they recover from this disappointing season?</p>
 
 
 
  ]]></description>
-  <category>news</category>
+  <category>basketball</category>
+  <category>creighton</category>
   <category>code</category>
-  <category>analysis</category>
-  <guid>https://your-website-url.example.com/posts/post-with-code/</guid>
-  <pubDate>Mon, 30 Mar 2026 05:00:00 GMT</pubDate>
-  <media:content url="https://your-website-url.example.com/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
-  <link>https://your-website-url.example.com/posts/welcome/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://your-website-url.example.com/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <guid>https://your-website-url.example.com/posts/welcome/</guid>
-  <pubDate>Fri, 27 Mar 2026 05:00:00 GMT</pubDate>
+  <guid>https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/</guid>
+  <pubDate>Fri, 10 Apr 2026 05:00:00 GMT</pubDate>
+  <media:content url="https://your-website-url.example.com/posts/why-did-creightons-mens-basketball-fall-off-in-2026/image.png" medium="image" type="image/png" height="88" width="144"/>
 </item>
 </channel>
 </rss>
